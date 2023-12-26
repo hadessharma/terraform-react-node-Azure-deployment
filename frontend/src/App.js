@@ -1,40 +1,23 @@
-import { useState } from "react";
 import "./App.css";
-import { createResource } from "./functions/post";
+import { Route, Routes } from "react-router-dom";
+
+import NavBar from "./components/navbar";
+import CreateResources from "./pages/createResources";
+import ErrorPage from "./pages/errorPage";
+import Home from "./pages/home";
+import RGForm from "./components/forms/rgForm";
 
 function App() {
-  const [rgName, setRGName] = useState("");
-  const [rgLoc, setRGLoc] = useState("");
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const values = { type: "rg", rgName, rgLoc };
-    createResource(values);
-    // console.log(rgName + "-" + rgLoc);
-  };
   return (
-    <div className="App">
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name</label>
-          <input
-            type="text"
-            placeholder="RG-Name"
-            value={rgName}
-            onChange={(e) => setRGName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Location</label>
-          <input
-            type="text"
-            placeholder="RG-Location"
-            value={rgLoc}
-            onChange={(e) => setRGLoc(e.target.value)}
-          />
-        </div>
-        <button type="submit">Create</button>
-      </form>
-    </div>
+    <>
+      <NavBar />
+      <Routes>
+        <Route path="*" element={<ErrorPage />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/create/resources" element={<CreateResources />} />
+        <Route path="/create/resources/rg" element={<RGForm />} />
+      </Routes>
+    </>
   );
 }
 
