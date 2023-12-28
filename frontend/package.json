@@ -3,11 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0",
-    "@fontsource/roboto": "^5.0.8",
-    "@mui/icons-material": "^5.15.2",
-    "@mui/material": "^5.15.2",
+    "@heroicons/react": "^2.1.1",
+    "@material-tailwind/react": "^2.1.8",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -45,8 +42,7 @@
       "last 1 safari version"
     ]
   },
-  "peerDependencies": {
-    "react": "^17.0.0 || ^18.0.0",
-    "react-dom": "^17.0.0 || ^18.0.0"
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
   }
 }
