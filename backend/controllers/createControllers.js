@@ -1,10 +1,12 @@
 const fs = require("fs");
-
+const exec = require("await-exec");
+const { terraformExec } = require("../functions/terraformCommands");
+const test1 = require("../functions/test");
 //@des create Azure resource
 //@route POST /api
 //@access public
 
-const createResource = (req, res) => {
+const createResource = async (req, res) => {
   try {
     // console.log(req.body);
     switch (req.body.type) {
@@ -46,6 +48,12 @@ const createResource = (req, res) => {
       default:
         break;
     }
+
+    // console.log("Exec in progress.");
+    await terraformExec();
+
+    // console.log("Exec completed.");
+
     return res.status(200).json(req.body);
   } catch (error) {
     console.log(error);
