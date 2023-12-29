@@ -4,13 +4,25 @@ import { Typography } from "@material-tailwind/react";
 import { Button } from "@material-tailwind/react";
 import { List, ListItem, Card, IconButton } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
+import SubscriptionModal from "../components/modal/subscription";
+import { useState } from "react";
+import DeleteSubscriptionModal from "../components/modal/deleteSubscription";
 
 export default function Home() {
   const subscriptions = ["Subscription A", "Subscription B", "Subscription C"];
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenDelete, setIsOpenDelete] = useState(false);
+  const [subscriptionId, setSubscriptionId] = useState("");
+  const [subscriptionName, setSubscriptionName] = useState("");
 
-  const handleDelete = (e, sub) => {
-    e.stopPropagation();
-    alert(sub);
+  const handleDelete = (subName, subId) => {
+    setSubscriptionName(subName);
+    setSubscriptionId(subId);
+    setIsOpenDelete(!isOpenDelete);
+  };
+
+  const openModal = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -23,28 +35,39 @@ export default function Home() {
           <Typography variant="lead" className="font-semibold">
             Select Your Subscription:
           </Typography>
-          <Button ripple={true}>+ New Subscription</Button>
+          <Button ripple={true} onClick={openModal}>
+            + New Subscription
+          </Button>
+          <SubscriptionModal isOpen={isOpen} openModal={openModal} />
+          <DeleteSubscriptionModal
+            isOpen={isOpenDelete}
+            openModal={handleDelete}
+            subscriptionName={subscriptionName}
+            subscriptionId={subscriptionId}
+          />
         </div>
         <hr className="my-3" />
         <Card className="w-full">
           <List>
             {subscriptions.map((sub, i) => {
               return (
-                <div className="w-full flex flex-row items-center justify-between gap-1">
-                  <Link
-                    to={`/subscription/${i}`}
-                    className="w-full py-1 pr-1 pl-4"
-                  >
-                    <ListItem ripple={true}>{sub}</ListItem>
-                  </Link>
-                  <IconButton
-                    variant="text"
-                    color="blue-gray"
-                    onClick={(e) => handleDelete(e, sub)}
-                  >
-                    <TrashIcon />
-                  </IconButton>
-                </div>
+                <>
+                  <div className="w-full flex flex-row items-center justify-between gap-1">
+                    <Link
+                      to={`/subscription/${i}`}
+                      className="w-full py-1 pr-1 pl-4"
+                    >
+                      <ListItem ripple={true}>{sub}</ListItem>
+                    </Link>
+                    <IconButton
+                      variant="text"
+                      color="blue-gray"
+                      onClick={() => handleDelete(sub, i)}
+                    >
+                      <TrashIcon />
+                    </IconButton>
+                  </div>
+                </>
               );
             })}
           </List>
