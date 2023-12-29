@@ -1,7 +1,6 @@
 const fs = require("fs");
 const exec = require("await-exec");
 const { terraformExec } = require("../functions/terraformCommands");
-const test1 = require("../functions/test");
 //@des create Azure resource
 //@route POST /api
 //@access public
