@@ -16,8 +16,8 @@ export default function RGForm() {
       // console.log(rgName + "-" + rgLoc);
       setRGName("");
       setRGLoc("");
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
   };
 

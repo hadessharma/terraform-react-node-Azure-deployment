@@ -21,7 +21,7 @@ const createResource = async (req, res) => {
           if (err) {
             console.log(err);
           }
-        });
+        
 
         const bodyObject = req.body;
         let newFile = data;
@@ -37,15 +37,15 @@ const createResource = async (req, res) => {
         }
 
         fs.writeFile(
-          `../terraform/${req.body.saName}.tf`,
-          mewFile,
+          `../terraform/${req.body.resourceName}.tf`,
+          newFile,
           "utf-8",
           (error) => {
             if (error) {
               return console.log(error);
             }
           }
-        );
+        )});
         break;
         
       case "rg":

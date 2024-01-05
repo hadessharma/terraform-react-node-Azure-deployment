@@ -9,6 +9,7 @@ import About from "./pages/about";
 import RGForm from "./components/forms/rgForm";
 import Account from "./pages/account";
 import Subscription from "./pages/subscription";
+import SAForm from "./components/forms/saForm";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/account" element={<Account />} />
         <Route path="/create/resources" element={<CreateResources />} />
         <Route path="/create/resources/resourcegroup" element={<RGForm />} />
+        <Route path="/create/resources/storageaccount" element={<SAForm />} />
       </Routes>
     </>
   );
