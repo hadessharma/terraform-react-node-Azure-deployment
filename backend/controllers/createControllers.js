@@ -3,6 +3,7 @@ const exec = require("await-exec");
 
 const { terraformExec } = require("../functions/terraformCommands");
 const Subscription = require("../models/subscription");
+const { error } = require("console");
 //@des create Azure resource
 //@route POST /api
 //@access public
@@ -15,6 +16,38 @@ const createResource = async (req, res) => {
     // Update the provide file first
     // Update or Create <resource_name>.tf file acc. to type and values
     switch (req.body.type) {
+      case "sa":
+        fs.readFile("../terraform/templates/sa.tf", "utf-8", (err, data) => {
+          if (err) {
+            console.log(err);
+          }
+        
+
+        const bodyObject = req.body;
+        let newFile = data;
+
+        for (const key in bodyObject) {
+          if (Object.hasOwnProperty.call(bodyObject, key)) {
+            const value = bodyObject[key];
+
+            if (key != "type") {
+              newFile = newFile.replaceAll(`@@${key}@@`, `${value}`);
+            }
+          }
+        }
+
+        fs.writeFile(
+          `../terraform/${req.body.resourceName}.tf`,
+          newFile,
+          "utf-8",
+          (error) => {
+            if (error) {
+              return console.log(error);
+            }
+          }
+        )});
+        break;
+        
       case "rg":
         fs.readFile("../terraform/templates/rg.tf", "utf-8", (err, data) => {
           if (err) {

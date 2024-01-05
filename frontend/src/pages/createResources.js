@@ -31,7 +31,7 @@ export default function CreateResources() {
     },
     {
       id: 4,
-      name: "Storage Accounts",
+      name: "Storage Account",
       image:
         "https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azurestorage/0.15.3/1686611602534/Microsoft.VisualStudio.Services.Icons.Default",
       description:

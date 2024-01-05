@@ -1,8 +1,8 @@
-resource "azurerm_storage_account" "@@saName@@" {
-  name                     = "@@saName@@"
+resource "azurerm_storage_account" "@@resourceName@@" {
+  name                     = "@@resourceName@@"
   location                 = "@@loc@@"
   resource_group_name      = "@@rgName@@"
-  account_tier             = "@@acTier@@"
-  account_replication_type = "@@acRepli@@"
+  account_tier             = "@@saTier@@"
+  account_replication_type = "@@saRepli@@"
 
 }
