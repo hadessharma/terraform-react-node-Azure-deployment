@@ -1,4 +1,4 @@
-import { Typography } from "@material-tailwind/react";
+import { Button, Typography } from "@material-tailwind/react";
 
 import { ProfileCard } from "../components/cards/profile";
 
@@ -18,18 +18,24 @@ export default function Account() {
           <Typography variant="paragraph" className="underline">
             Subscriptions:
           </Typography>
-          <Typography variant="small">
-            {" "}
-            <b className="font-semibold">Subscription A</b> -- 60 USD
-          </Typography>
-          <Typography variant="small">
-            {" "}
-            <b className="font-semibold">Subscription B</b> -- 25 USD
-          </Typography>
-          <Typography variant="small">
-            {" "}
-            <b className="font-semibold">Subscription C</b> -- 15 USD
-          </Typography>
+          <div className="flex gap-4 items-center">
+            <Typography variant="paragraph">
+              <b className="font-semibold">Subscription A</b> -- 60 USD
+            </Typography>
+            <Button size="sm">Update</Button>
+          </div>
+          <div className="flex gap-4 items-center">
+            <Typography variant="paragraph">
+              <b className="font-semibold">Subscription B</b> -- 25 USD
+            </Typography>
+            <Button size="sm">Update</Button>
+          </div>
+          <div className="flex gap-4 items-center">
+            <Typography variant="paragraph">
+              <b className="font-semibold">Subscription C</b> -- 15 USD
+            </Typography>
+            <Button size="sm">Update</Button>
+          </div>
         </div>
       </div>
     </div>
