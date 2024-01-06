@@ -65,6 +65,7 @@ export default function CreateResources() {
           {resources.map((res, i) => {
             return (
               <ResourceCard
+                key={i}
                 name={res.name}
                 desc={res.description}
                 img={res.image}

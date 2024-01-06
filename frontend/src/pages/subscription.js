@@ -103,7 +103,10 @@ export default function Subscription() {
                   <List>
                     {resources.map((res, i) => {
                       return (
-                        <div className="w-full flex flex-row items-center justify-between gap-1">
+                        <div
+                          key={i}
+                          className="w-full flex flex-row items-center justify-between gap-1"
+                        >
                           {/* <Link to={`/resource/${i}`} className="w-full py-1 pr-1 pl-4"> */}
                           <ListItem ripple={true}>{res}</ListItem>
                           {/* </Link> */}

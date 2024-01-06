@@ -1,4 +1,4 @@
-resource "azurerm_resource_group" "@@rgName@@" {
-  name     = "@@rgName@@"
+resource "azurerm_resource_group" "@@resourceName@@" {
+  name     = "@@resourceName@@"
   location = "@@rgLoc@@"
 }
