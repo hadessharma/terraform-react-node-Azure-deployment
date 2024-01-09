@@ -3,6 +3,7 @@ const fs = require("fs");
 
 const { terraformExec } = require("../functions/terraformCommands");
 const Subscription = require("../models/subscription");
+const User = require("../models/user");
 //@des create Azure resource
 //@route POST /api
 //@access public
@@ -141,4 +142,20 @@ const createSubscription = async (req, res) => {
   }
 };
 
-module.exports = { createResource, createSubscription };
+const createUser = async (req, res) => {
+  try {
+    const { userName, email, password } = req.body;
+    const newUser = new User({ username: userName, email, password });
+    await newUser.save();
+    return res.status(201).json({
+      username: newUser.username,
+      profilepic: newUser.profilepic,
+      msg: "User successfully created.",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal Error" });
+  }
+};
+
+module.exports = { createResource, createSubscription, createUser };

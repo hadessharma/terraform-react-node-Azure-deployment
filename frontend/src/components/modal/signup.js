@@ -13,8 +13,11 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
+import { createUser } from "../../functions/post";
 
 export default function SignUpModal({ isOpen, openModal }) {
+  const [userName, setUserName] = useState("");
+  // const [email, setEmail] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState("");
@@ -23,10 +26,11 @@ export default function SignUpModal({ isOpen, openModal }) {
   const handleSubmit = async () => {
     console.log(user.email);
 
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential) => {
         // Signed up
-        setUser(userCredential.user);
+        const response = await createUser(userName, email, password);
+        setUser(response.data.data);
         // ...
       })
       .catch((error) => {
@@ -51,6 +55,13 @@ export default function SignUpModal({ isOpen, openModal }) {
         ) : (
           <>
             <div className="my-3 w-[80%] flex flex-col items-center justify-between gap-3">
+              <div className="w-full">
+                <Input
+                  label="Username"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                />
+              </div>
               <div className="w-full">
                 <Input
                   label="Email"
