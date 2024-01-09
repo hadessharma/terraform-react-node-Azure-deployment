@@ -19,3 +19,15 @@ export async function createSubscription(values) {
     console.log(err);
   }
 }
+
+export async function createUser(userName, email, password) {
+  try {
+    return await axios.post(`${process.env.REACT_APP_API}/api/create/user`, {
+      userName,
+      email,
+      password,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
