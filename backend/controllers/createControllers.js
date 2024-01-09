@@ -33,83 +33,39 @@ const createResource = async (req, res) => {
 
     // Update or Create <resource_name>.tf file acc. to type and values
 
-    switch (req.body.type) {
-      case "sa":
-        fs.readFile("../terraform/templates/sa.tf", "utf-8", (err, data) => {
-          if (err) {
-            console.log(err);
-          }
+    fs.readFile(
+      `../terraform/templates/${req.body.type}.tf`,
+      "utf-8",
+      (err, data) => {
+        if (err) {
+          console.log(err);
+        }
 
-          const bodyObject = req.body;
-          let newFile = data;
+        const bodyObject = req.body;
+        let newFile = data;
 
-          for (const key in bodyObject) {
-            if (Object.hasOwnProperty.call(bodyObject, key)) {
-              const value = bodyObject[key];
+        for (const key in bodyObject) {
+          if (Object.hasOwnProperty.call(bodyObject, key)) {
+            const value = bodyObject[key];
 
-              if (key != "type") {
-                newFile = newFile.replaceAll(`@@${key}@@`, `${value}`);
-              }
+            if (key != "type") {
+              newFile = newFile.replaceAll(`@@${key}@@`, `${value}`);
             }
           }
+        }
 
-          fs.writeFile(
-            `../terraform/${req.body.resourceName}.tf`,
-            newFile,
-            "utf-8",
-            (error) => {
-              if (error) {
-                return console.log(error);
-              }
-            }
-          );
-        });
-        break;
-
-      case "rg":
-        fs.readFile("../terraform/templates/rg.tf", "utf-8", (err, data) => {
-          if (err) {
-            console.log(err);
-            return res
-              .status(400)
-              .json({ error: err, msg: "Some error occured!" });
-          }
-
-          const bodyObject = req.body;
-          let newFile = data;
-
-          // Using a for...in loop to iterate over the properties of req.body
-          // Replacing the variables in terraform file from the req.body
-          for (const key in bodyObject) {
-            if (Object.hasOwnProperty.call(bodyObject, key)) {
-              const value = bodyObject[key];
-
-              if (key !== "type") {
-                newFile = newFile.replaceAll(`@@${key}@@`, `${value}`);
-              }
+        fs.writeFile(
+          `../terraform/${req.body.resourceName}.tf`,
+          newFile,
+          "utf-8",
+          (error) => {
+            if (error) {
+              return console.log(error);
             }
           }
-
-          // Create resource specific terraform file from the template
-          fs.writeFile(
-            `../terraform/${req.body.resourceName}.tf`,
-            newFile,
-            "utf-8",
-            (error) => {
-              if (error) {
-                console.log(error);
-                return res
-                  .status(400)
-                  .json({ error: err, msg: "Some error occured!" });
-              }
-            }
-          );
-        });
-        break;
-
-      default:
-        break;
-    }
+        );
+      }
+    );
 
     console.log("Exec in progress.");
     terraformExec()

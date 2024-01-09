@@ -22,7 +22,7 @@ export default function SAForm() {
         rgName,
         saTier,
         saRepli,
-        subscriptionId: "subscription_id",
+        subscriptionId: "65990404eba840e4b1d86249",
       };
       const res = await createResource(values);
       setLoading(false);

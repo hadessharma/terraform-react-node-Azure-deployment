@@ -7,9 +7,20 @@ import {
   Collapse,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
+import LoginModal from "./modal/login";
+import SignUpModal from "./modal/signup";
 
 export default function MainNavbar() {
   const [openNav, setOpenNav] = React.useState(false);
+  const [isOpenLogin, setIsOpenLogin] = React.useState(false);
+  const [isOpenSignup, setIsOpenSignup] = React.useState(false);
+
+  const openModalLogin = () => {
+    setIsOpenLogin(!isOpenLogin);
+  };
+  const openModalSignup = () => {
+    setIsOpenSignup(!isOpenSignup);
+  };
 
   React.useEffect(() => {
     window.addEventListener(
@@ -73,18 +84,27 @@ export default function MainNavbar() {
         >
           Material Tailwind
         </Typography>
+
         <div className="flex items-center gap-4">
           <div className="mr-4 hidden lg:block">{navList}</div>
           <div className="flex items-center gap-x-1">
-            <Button variant="text" size="sm" className="hidden lg:inline-block">
+            <LoginModal openModal={openModalLogin} isOpen={isOpenLogin} />
+            <Button
+              onClick={openModalLogin}
+              variant="text"
+              size="sm"
+              className="hidden lg:inline-block"
+            >
               <span>Log In</span>
             </Button>
+            <SignUpModal openModal={openModalSignup} isOpen={isOpenSignup} />
             <Button
               variant="gradient"
               size="sm"
               className="hidden lg:inline-block"
+              onClick={openModalSignup}
             >
-              <span>Sign in</span>
+              <span>Sign Up</span>
             </Button>
           </div>
           <IconButton
@@ -133,7 +153,7 @@ export default function MainNavbar() {
             <span>Log In</span>
           </Button>
           <Button fullWidth variant="gradient" size="sm" className="">
-            <span>Sign in</span>
+            <span>Sign Un</span>
           </Button>
         </div>
       </Collapse>

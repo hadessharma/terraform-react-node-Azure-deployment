@@ -16,7 +16,7 @@ export default function RGForm() {
         type: "rg",
         resourceName: rgName,
         rgLoc,
-        subscriptionId: "subscription_id",
+        subscriptionId: "65990404eba840e4b1d86249",
       };
       const res = await createResource(values);
       console.log("RES: ", res);
