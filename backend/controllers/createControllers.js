@@ -148,8 +148,7 @@ const createUser = async (req, res) => {
     const newUser = new User({ username: userName, email, password });
     await newUser.save();
     return res.status(201).json({
-      username: newUser.username,
-      profilepic: newUser.profilepic,
+      data: { username: newUser.username, profilepic: newUser.profilepic },
       msg: "User successfully created.",
     });
   } catch (error) {
