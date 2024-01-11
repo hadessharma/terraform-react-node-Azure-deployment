@@ -8,33 +8,43 @@ import {
   Spinner,
 } from "@material-tailwind/react";
 import { Input } from "@material-tailwind/react";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+
 import { auth } from "../../config/firebaseAuth";
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { getCurrentUser } from "../../functions/get";
+import { logIn } from "../../store/functions/userReducer";
 
 export default function LoginModal({ isOpen, openModal }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
+  const dispatch = useDispatch();
 
+  const handleSubmit = async () => {
+    setLoading(true);
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up
-        setUser(userCredential.user);
-        // ...
+      .then(async (userCredential) => {
+        const res = await getCurrentUser(email);
+        dispatch(
+          logIn({
+            username: res.data.data.username,
+            profilePic: res.data.data.profilePic, //Token will also be stored globally
+          })
+        );
+        setLoading(false);
+        toast.success("Logged In Successfully.");
+        openModal();
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
+        console.log(error.message);
+        setLoading(false);
+        openModal();
+        toast.error(error.message);
       });
   };
-
-  // onAuthStateChanged(auth, (currentUser) => {
-  //   setUser(currentUser);
-  // });
 
   return (
     <Dialog open={isOpen} handler={openModal}>

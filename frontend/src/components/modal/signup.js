@@ -8,41 +8,46 @@ import {
   Spinner,
 } from "@material-tailwind/react";
 import { Input } from "@material-tailwind/react";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { logIn } from "../../store/functions/userReducer";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+
 import { auth } from "../../config/firebaseAuth";
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-} from "firebase/auth";
 import { createUser } from "../../functions/post";
 
 export default function SignUpModal({ isOpen, openModal }) {
   const [userName, setUserName] = useState("");
-  // const [email, setEmail] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
-    console.log(user.email);
+  const user = useSelector((state) => state.user.loggedInuser);
+  const dispatch = useDispatch();
 
+  const handleSubmit = async () => {
+    setLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         // Signed up
         const response = await createUser(userName, email, password);
-        setUser(response.data.data);
-        // ...
+        dispatch(
+          logIn({
+            username: response.data.data.username,
+            profilePic: response.data.data.profilePic, //Token will also be stored globally
+          })
+        );
+        setLoading(false);
+        openModal();
+        toast.success("User registered successfully.");
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
+        setLoading(false);
+        console.log(error.message);
+        openModal();
+        toast.error(error.message);
       });
   };
-
-  // onAuthStateChanged(auth, (currentUser) => {
-  //   setUser(currentUser);
-  // });
 
   return (
     <Dialog open={isOpen} handler={openModal}>

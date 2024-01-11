@@ -40,11 +40,12 @@ export default function SAForm() {
   return (
     <div className="h-[calc(100vh-80px)] p-4 flex flex-col items-center justify-center">
       {loading ? (
-        <>
+        <div className="flex flex-col items-center gap-4">
           <Typography variant="h4" className="mb-4" color="blue-gray">
-            Storage account create in-progress
+            Storage account create in-progress...
           </Typography>
-        </>
+          <Spinner />
+        </div>
       ) : (
         <Card className="flex flex-col items-center md:w-[40%] p-4 shadow-xl">
           <Typography variant="h4" color="blue-gray">
