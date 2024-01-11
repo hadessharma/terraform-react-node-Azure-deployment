@@ -23,18 +23,22 @@ function App() {
   const user = useSelector((state) => state.user.loggedInuser);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        // const idTokenResult = await user.getIdTokenResult(); //idTokenResult.token -> will be sent as header to check in middleware.
-        const res = await getCurrentUser(user.email); //idTokenResult.token -> will be sebt instead of email
-        dispatch(
-          logIn({
-            username: res.data.data.username,
-            profilePic: res.data.data.profilePic, //Token will also be stored globally
-          })
-        );
-      }
-    });
+    const unsubscribe = auth.onAuthStateChanged(
+      async (user) => {
+        if (user) {
+          const idTokenResult = await user.getIdTokenResult(); //idTokenResult.token -> will be sent as header to check in middleware.
+          const res = await getCurrentUser(idTokenResult.token);
+          dispatch(
+            logIn({
+              username: res.data.data.username,
+              profilePic: res.data.data.profilePic, //Token will also be stored globally
+              token: idTokenResult.token,
+            })
+          );
+        }
+      },
+      [dispatch]
+    );
 
     const delay = 3000;
     const delayId = setTimeout(() => {

@@ -29,15 +29,19 @@ export default function SignUpModal({ isOpen, openModal }) {
     setLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
-        // Signed up
+        const idTokenResult = userCredential._tokenResponse;
         const response = await createUser(userName, email, password);
         dispatch(
           logIn({
             username: response.data.data.username,
-            profilePic: response.data.data.profilePic, //Token will also be stored globally
+            profilePic: response.data.data.profilePic,
+            token: idTokenResult.idToken,
           })
         );
         setLoading(false);
+        setUserName("");
+        setPassword("");
+        setEmail("");
         openModal();
         toast.success("User registered successfully.");
       })

@@ -130,8 +130,9 @@ const createResource = async (req, res) => {
 
 const createSubscription = async (req, res) => {
   try {
+    const user = await User.findOne({ email: req.user.email });
     const values = req.body;
-    const newSubscription = new Subscription(values);
+    const newSubscription = new Subscription({ ...values, userId: user._id });
     await newSubscription.save();
     return res
       .status(201)
@@ -148,7 +149,7 @@ const createUser = async (req, res) => {
     const newUser = new User({ username: userName, email, password });
     await newUser.save();
     return res.status(201).json({
-      data: { username: newUser.username, profilepic: newUser.profilepic },
+      data: { username: newUser.username, profilePic: newUser.profilepic },
       msg: "User successfully created.",
     });
   } catch (error) {

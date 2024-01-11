@@ -27,16 +27,21 @@ export default function LoginModal({ isOpen, openModal }) {
     setLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
-        const res = await getCurrentUser(email);
+        console.log(userCredential._tokenResponse);
+        const idTokenResult = userCredential._tokenResponse;
+        const res = await getCurrentUser(idTokenResult.idToken);
         dispatch(
           logIn({
             username: res.data.data.username,
-            profilePic: res.data.data.profilePic, //Token will also be stored globally
+            profilePic: res.data.data.profilePic,
+            token: idTokenResult.idToken,
           })
         );
         setLoading(false);
-        toast.success("Logged In Successfully.");
+        setEmail("");
+        setPassword("");
         openModal();
+        toast.success("Logged In Successfully.");
       })
       .catch((error) => {
         console.log(error.message);

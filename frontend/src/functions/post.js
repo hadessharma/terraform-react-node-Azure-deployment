@@ -9,11 +9,14 @@ export async function createResource(values) {
   }
 }
 
-export async function createSubscription(values) {
+export async function createSubscription(values, authToken) {
   try {
     return await axios.post(
       `${process.env.REACT_APP_API}/api/create/subscription`,
-      values
+      values,
+      {
+        headers: { authToken },
+      }
     );
   } catch (err) {
     console.log(err);
