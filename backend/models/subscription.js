@@ -28,6 +28,12 @@ const subscriptionSchema = new Schema(
       type: Schema.ObjectId,
       ref: "User",
     },
+    resources: [
+      {
+        type: Schema.ObjectId,
+        ref: "Resource",
+      },
+    ],
   },
   { timestamps: true }
 );
