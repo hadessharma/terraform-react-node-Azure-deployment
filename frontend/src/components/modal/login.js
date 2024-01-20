@@ -27,7 +27,7 @@ export default function LoginModal({ isOpen, openModal }) {
     setLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
-        console.log(userCredential._tokenResponse);
+        // console.log(userCredential._tokenResponse);
         const idTokenResult = userCredential._tokenResponse;
         const res = await getCurrentUser(idTokenResult.idToken);
         dispatch(
