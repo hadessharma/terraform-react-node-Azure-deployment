@@ -16,7 +16,7 @@ export default function RGForm() {
         type: "rg",
         resourceName: rgName,
         rgLoc,
-        subscriptionId: "65990404eba840e4b1d86249",
+        subscriptionId: "65a1211fadc307ad540f93d2",
       };
       const res = await createResource(values);
       console.log("RES: ", res);
@@ -32,12 +32,12 @@ export default function RGForm() {
   return (
     <div className="h-[calc(100vh-80px)] p-4 flex flex-col items-center justify-center">
       {loading ? (
-        <>
+        <div className="flex flex-col items-center gap-4">
           <Typography variant="h4" className="mb-4" color="blue-gray">
-            Resource group creation in-progress
+            Resource group creation in-progress...
           </Typography>
           <Spinner />
-        </>
+        </div>
       ) : (
         <Card className="flex flex-col items-center md:w-[40%] p-4 shadow-xl">
           <Typography variant="h4" color="blue-gray">

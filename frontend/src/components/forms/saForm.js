@@ -22,7 +22,7 @@ export default function SAForm() {
         rgName,
         saTier,
         saRepli,
-        subscriptionId: "65990404eba840e4b1d86249",
+        subscriptionId: "65a1211fadc307ad540f93d2",
       };
       const res = await createResource(values);
       setLoading(false);
@@ -40,11 +40,12 @@ export default function SAForm() {
   return (
     <div className="h-[calc(100vh-80px)] p-4 flex flex-col items-center justify-center">
       {loading ? (
-        <>
+        <div className="flex flex-col items-center gap-4">
           <Typography variant="h4" className="mb-4" color="blue-gray">
-            Storage account create in-progress
+            Storage account create in-progress...
           </Typography>
-        </>
+          <Spinner />
+        </div>
       ) : (
         <Card className="flex flex-col items-center md:w-[40%] p-4 shadow-xl">
           <Typography variant="h4" color="blue-gray">

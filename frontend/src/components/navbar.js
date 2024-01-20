@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import {
   Navbar,
   Typography,
@@ -7,13 +7,23 @@ import {
   Collapse,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { signOut } from "firebase/auth";
+
+import { auth } from "../config/firebaseAuth";
 import LoginModal from "./modal/login";
 import SignUpModal from "./modal/signup";
+import { logout } from "../store/functions/userReducer";
 
 export default function MainNavbar() {
-  const [openNav, setOpenNav] = React.useState(false);
-  const [isOpenLogin, setIsOpenLogin] = React.useState(false);
-  const [isOpenSignup, setIsOpenSignup] = React.useState(false);
+  const [openNav, setOpenNav] = useState(false);
+  const [isOpenLogin, setIsOpenLogin] = useState(false);
+  const [isOpenSignup, setIsOpenSignup] = useState(false);
+
+  const user = useSelector((state) => state.user.loggedInuser);
+  const dispatch = useDispatch();
+
+  console.log("NAV: ", user);
 
   const openModalLogin = () => {
     setIsOpenLogin(!isOpenLogin);
@@ -22,12 +32,21 @@ export default function MainNavbar() {
     setIsOpenSignup(!isOpenSignup);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener(
       "resize",
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
+
+  const signOutUser = async () => {
+    try {
+      await signOut(auth);
+      dispatch(logout());
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
@@ -41,16 +60,19 @@ export default function MainNavbar() {
           <p className="flex items-center">Home</p>
         </Link>
       </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <Link to="/account">
-          <p className="flex items-center">Account</p>
-        </Link>
-      </Typography>
+      {user && Object.keys(user).length > 0 && (
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className="p-1 font-normal"
+        >
+          <Link to="/account">
+            <p className="flex items-center">Account</p>
+          </Link>
+        </Typography>
+      )}
+
       <Typography
         as="li"
         variant="small"
@@ -89,23 +111,36 @@ export default function MainNavbar() {
           <div className="mr-4 hidden lg:block">{navList}</div>
           <div className="flex items-center gap-x-1">
             <LoginModal openModal={openModalLogin} isOpen={isOpenLogin} />
-            <Button
-              onClick={openModalLogin}
-              variant="text"
-              size="sm"
-              className="hidden lg:inline-block"
-            >
-              <span>Log In</span>
-            </Button>
             <SignUpModal openModal={openModalSignup} isOpen={isOpenSignup} />
-            <Button
-              variant="gradient"
-              size="sm"
-              className="hidden lg:inline-block"
-              onClick={openModalSignup}
-            >
-              <span>Sign Up</span>
-            </Button>
+            {user && Object.keys(user).length > 0 ? (
+              <Button
+                variant="gradient"
+                size="sm"
+                className="hidden lg:inline-block"
+                onClick={signOutUser}
+              >
+                <span>Sign Out</span>
+              </Button>
+            ) : (
+              <>
+                <Button
+                  onClick={openModalLogin}
+                  variant="text"
+                  size="sm"
+                  className="hidden lg:inline-block"
+                >
+                  <span>Log In</span>
+                </Button>
+                <Button
+                  variant="gradient"
+                  size="sm"
+                  className="hidden lg:inline-block"
+                  onClick={openModalSignup}
+                >
+                  <span>Sign Up</span>
+                </Button>
+              </>
+            )}
           </div>
           <IconButton
             variant="text"
@@ -154,6 +189,9 @@ export default function MainNavbar() {
           </Button>
           <Button fullWidth variant="gradient" size="sm" className="">
             <span>Sign Un</span>
+          </Button>
+          <Button fullWidth variant="gradient" size="sm" className="">
+            <span>Sign Out</span>
           </Button>
         </div>
       </Collapse>

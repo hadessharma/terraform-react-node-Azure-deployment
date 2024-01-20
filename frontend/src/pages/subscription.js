@@ -1,6 +1,5 @@
 import TrashIcon from "../components/icons/trash";
 
-// import { useParams } from "react-router-dom";
 import { Typography } from "@material-tailwind/react";
 import { Button } from "@material-tailwind/react";
 import {
@@ -17,10 +16,6 @@ import {
 import { Link } from "react-router-dom";
 
 export default function Subscription() {
-  //   const { id } = useParams();
-
-  // const resources = ["Resource A", "Resource B", "Resource C"];
-
   const handleDelete = (e, sub) => {
     e.stopPropagation();
     alert(sub);

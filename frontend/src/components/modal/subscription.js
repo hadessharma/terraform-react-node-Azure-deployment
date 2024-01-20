@@ -8,6 +8,9 @@ import {
   Spinner,
 } from "@material-tailwind/react";
 import { Input } from "@material-tailwind/react";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+
 import { createSubscription } from "../../functions/post";
 
 export default function SubscriptionModal({ isOpen, openModal, loadSubs }) {
@@ -18,16 +21,21 @@ export default function SubscriptionModal({ isOpen, openModal, loadSubs }) {
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const user = useSelector((state) => state.user.loggedInuser);
+
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      await createSubscription({
-        subscriptionName,
-        subscriptionId,
-        tenantId,
-        clientId,
-        clientSecret,
-      });
+      await createSubscription(
+        {
+          subscriptionName,
+          subscriptionId,
+          tenantId,
+          clientId,
+          clientSecret,
+        },
+        user?.token
+      );
       await loadSubs();
       setSubscriptionName("");
       setSubscriptionId("");
@@ -36,9 +44,12 @@ export default function SubscriptionModal({ isOpen, openModal, loadSubs }) {
       setTenantId("");
       setLoading(false);
       openModal();
+      toast.success("New subscription added successfully.");
     } catch (err) {
       setLoading(false);
       console.log(err);
+      openModal();
+      toast.error(err);
     }
   };
 

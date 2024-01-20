@@ -7,18 +7,15 @@ import {
   Tooltip,
 } from "@material-tailwind/react";
 
-export function ProfileCard() {
+export function ProfileCard({ user }) {
   return (
     <Card className="w-96">
       <CardHeader floated={false} className="h-100">
-        <img
-          src="https://docs.material-tailwind.com/img/team-3.jpg"
-          alt="profile-picture"
-        />
+        <img src={user?.profilePic} alt="profile-picture" />
       </CardHeader>
       <CardBody className="text-center">
         <Typography variant="h4" color="blue-gray" className="mb-2">
-          Natalie Paisley
+          {user?.username}
         </Typography>
         <Typography color="blue-gray" className="font-medium" textGradient>
           Position

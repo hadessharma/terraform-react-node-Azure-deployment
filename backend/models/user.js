@@ -22,6 +22,14 @@ const userSchema = new Schema(
         "https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg",
     },
     subscriptions: [{ type: Schema.ObjectId, ref: "Subscription" }],
+    organization: {
+      type: String,
+      default: "",
+    },
+    position: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );

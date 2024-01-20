@@ -4,6 +4,7 @@ const fs = require("fs");
 const { terraformExec } = require("../functions/terraformCommands");
 const Subscription = require("../models/subscription");
 const User = require("../models/user");
+const Resource = require("../models/resource");
 //@des create Azure resource
 //@route POST /api
 //@access public
@@ -14,7 +15,7 @@ const createResource = async (req, res) => {
     const { subscriptionId } = req.body;
     // Fetch the service principle according to selected subscription
     const subscription = await Subscription.findById(subscriptionId);
-    console.log(subscription);
+    // console.log(subscription);
     // Update the provider file first
     fs.readFile("../terraform/_provider.tf", "utf-8", (err, data) => {
       if (err) {
@@ -70,7 +71,7 @@ const createResource = async (req, res) => {
 
     console.log("Exec in progress.");
     terraformExec()
-      .then((result) => {
+      .then(async (result) => {
         console.log("Exec completed successfully.");
         console.log("RESULT:\n", result);
         fs.readFile("../terraform/_provider.tf", "utf-8", (err, data) => {
@@ -91,6 +92,20 @@ const createResource = async (req, res) => {
             }
           });
         });
+
+        //Saving resource to DB.
+
+        // const { type, resourceName, subscriptionId, ...details } = req.body;
+
+        // const resource = new Resource({
+        //   type: type,
+        //   name: resourceName,
+        //   details: JSON.stringify(details),
+        //   subscriptionId: subscriptionId,
+        // });
+
+        // await resource.save();
+
         return res
           .status(201)
           .json({ data: result, msg: "Resource created successfully." });
@@ -130,8 +145,9 @@ const createResource = async (req, res) => {
 
 const createSubscription = async (req, res) => {
   try {
+    const user = await User.findOne({ email: req.user.email });
     const values = req.body;
-    const newSubscription = new Subscription(values);
+    const newSubscription = new Subscription({ ...values, userId: user._id });
     await newSubscription.save();
     return res
       .status(201)
@@ -148,7 +164,7 @@ const createUser = async (req, res) => {
     const newUser = new User({ username: userName, email, password });
     await newUser.save();
     return res.status(201).json({
-      data: { username: newUser.username, profilepic: newUser.profilepic },
+      data: { username: newUser.username, profilePic: newUser.profilepic },
       msg: "User successfully created.",
     });
   } catch (error) {
