@@ -51,7 +51,7 @@ function App() {
     };
   }, []);
 
-  console.log(Object.keys(user).length);
+  // console.log(Object.keys(user).length);
 
   return (
     <>
